@@ -67,7 +67,8 @@
         "lj_truncate": "ON",
         "init_distribution": {
             "user_specify": {
-                "particles": [
+                "particles":
+                [
                     {
                         "r": {
                             "x": 0.0,
