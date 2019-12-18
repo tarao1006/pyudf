@@ -1,5 +1,6 @@
 """
 TODO: add os.path.expandvars to find_file
+TODO: add validation, if value type is list, to deepupdate
 """
 from pathlib import Path
 
@@ -51,12 +52,24 @@ def deepupdate(base, other):
     Parameters
     ----------
     base: dict
+        Params whose values ara the default values.
     other: dict
+        Values to be updated, for example from json file.
     """
     if not isinstance(base, dict) or not isinstance(other, dict):
-        raise TypeError(f"both of base and other must be dict, but got: {type(base)} and {type(other)}")
-    for k, v in other.items():
-        if isinstance(v, dict) and k in base:
-            deepupdate(base[k], v)
+        raise TypeError(f"Both of base and other must be dict, but got: {type(base)} and {type(other)}.")
+    for key, value in other.items():
+        if isinstance(value, dict) and key in base:
+            deepupdate(base[key], value)
         else:
-            base[k] = v
+            old_value = base.get(key)
+            if old_value is None:
+                raise ValueError(f"The key must not be added, but got new key: '{key}'")
+            else:
+                old_value_type = type(old_value)
+                if isinstance(value, int) and isinstance(old_value, float):
+                    value = float(value)
+                if isinstance(value, old_value_type):
+                    base[key] = value
+                else:
+                    raise ValueError(f"Value of '{key}' must be {old_value_type.__name__}, but got: {value} as {type(value).__name__}.")
