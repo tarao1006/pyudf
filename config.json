@@ -24,8 +24,8 @@
                     "particle_number": 1,
                     "mass_ratio": 1.0,
                     "surface_charge": 0.0,
-                    "jansu_axis": "Y",
-                    "jansu_propulsion": "SQUIRMER",
+                    "janus_axis": "Y",
+                    "janus_propulsion": "SQUIRMER",
                     "janus_force": {
                         "x": 0.0,
                         "y": 0.0,
