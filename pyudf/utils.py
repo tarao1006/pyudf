@@ -43,3 +43,20 @@ def find_file(filename, path_dirs=None):
             return Path.resolve(testname)
 
     raise FileNotFoundError(f"File '{filename}' can not be made in any of the search paths: {[str(path) for path in path_dirs]}")
+
+
+def deepupdate(base, other):
+    """Update dict even if some key doesn't exist.
+
+    Parameters
+    ----------
+    base: dict
+    other: dict
+    """
+    if not isinstance(base, dict) or not isinstance(other, dict):
+        raise TypeError(f"both of base and other must be dict, but got: {type(base)} and {type(other)}")
+    for k, v in other.items():
+        if isinstance(v, dict) and k in base:
+            deepupdate(base[k], v)
+        else:
+            base[k] = v
