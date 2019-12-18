@@ -14,7 +14,7 @@ self.constitutive_eq['shear_navier_stokes']['external_field']['dc']['shear_rate'
 self.object_type['type'] = 'spherical_particle'
 self.object_type['spherical_particle']['particle_spec'][0]['particle_number'] = 1
 self.object_type['spherical_particle']['particle_spec'][0]['mass_ratio'] = 1.0
-self.object_type['spherical_particle']['particle_spec'][0]['surface_charge'] = 1.0
+self.object_type['spherical_particle']['particle_spec'][0]['surface_charge'] = 0.0
 self.object_type['spherical_particle']['particle_spec'][0]['janus_axis'] = 'Y'
 self.object_type['spherical_particle']['particle_spec'][0]['jauns_propulsion'] = 'SQUIRMER'
 self.object_type['spherical_particle']['particle_spec'][0]['janus_force']['x'] = 0.0
