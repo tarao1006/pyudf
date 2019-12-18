@@ -58,3 +58,65 @@ sparticle = dict(
     q=quaternion,
     q_old=quaternion
 )
+
+particle_spec = dict(
+    particle_number=0,
+    mass_ratio=0.0,
+    surface_charge=0.0,
+    janus_axis='NONE',
+    janus_propulsion='OFF',
+    janus_force=dict(
+        x=0.0,
+        y=0.0,
+        z=0.0
+    ),
+    janus_torque=dict(
+        x=0.0,
+        y=0.0,
+        z=0.0
+    ),
+    janus_slip_vel=0.0,
+    janus_slip_mode=0.0,
+    janus_rotlet_c1=0.0,
+    janus_rotlet_dipolr_c2=0.0
+)
+
+chain_spec = dict(
+    beads_number=0,
+    chain_number=0,
+    mass_ratio=0.0,
+    surface_charge=0.0,
+    janus_axis='NONE'
+)
+
+rigid_spec = dict(
+    beads_number=0,
+    chain_number=0,
+    mass_ration=0.0,
+    surface_charge=0.0,
+    rigid_motion='fix',
+    rigid_velocity=dict(
+        x=0.0,
+        y=0.0,
+        z=0.0
+    ),
+    rigid_omega=dict(
+        x=0.0,
+        y=0.0,
+        z=0.0
+    )
+)
+
+dof = dict(
+    spec_id=0,
+    vel=dict(
+        x='NO',
+        y='NO',
+        z='NO'
+    ),
+    omega=dict(
+        x='NO',
+        y='NO',
+        z='NO'
+    )
+)

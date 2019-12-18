@@ -1,7 +1,10 @@
 import json
 
-from .utils import find_file, deepupdate
-from .udftype import particle, sparticle, matrix3d, vector3d
+from .utils import find_file, deepupdate, validate
+from .udftype import (
+    particle, sparticle, matrix3d, vector3d,
+    particle_spec, chain_spec, rigid_spec, dof
+)
 from .formatter import Formatter
 
 
@@ -124,65 +127,17 @@ class Udf(Formatter):
                 type='spherical_particle',
                 spherical_particle=dict(
                     particle_spec=list(
-                        [
-                            dict(
-                                particle_number=0,
-                                mass_ratio=0.0,
-                                surface_charge=0.0,
-                                janus_axis='NONE',
-                                jauns_propulsion='OFF',
-                                janus_force=dict(
-                                    x=0.0,
-                                    y=0.0,
-                                    z=0.0
-                                ),
-                                janus_torque=dict(
-                                    x=0.0,
-                                    y=0.0,
-                                    z=0.0
-                                ),
-                                janus_slip_vel=0.0,
-                                janus_slip_mode=0.0,
-                                janus_rotlet_c1=0.0,
-                                janus_rotlet_dipolr_c2=0.0
-                            )
-                        ]
+                        [particle_spec]
                     )
                 ),
                 chain=dict(
                     chain_spec=list(
-                        [
-                            dict(
-                                beads_number=0,
-                                chain_number=0,
-                                mass_ratio=0.0,
-                                surface_charge=0.0,
-                                janus_axis='NONE'
-                            )
-                        ]
+                        [chain_spec]
                     )
                 ),
                 rigid=dict(
-                    rigid_specs=list(
-                        [
-                            dict(
-                                beads_number=0,
-                                chain_number=0,
-                                mass_ration=0.0,
-                                surface_charge=0.0,
-                                rigid_motion='fix',
-                                rigid_velocity=dict(
-                                    x=0.0,
-                                    y=0.0,
-                                    z=0.0
-                                ),
-                                rigid_omega=dict(
-                                    x=0.0,
-                                    y=0.0,
-                                    z=0.0
-                                )
-                            )
-                        ]
+                    rigid_spec=list(
+                        [rigid_spec]
                     )
                 )
             ),
@@ -245,21 +200,7 @@ class Udf(Formatter):
                     type='NO',
                     yes=dict(
                         dof=list(
-                            [
-                                dict(
-                                    spec_id=0,
-                                    vel=dict(
-                                        x='NO',
-                                        y='NO',
-                                        z='NO'
-                                    ),
-                                    omega=dict(
-                                        x='NO',
-                                        y='NO',
-                                        z='NO'
-                                    )
-                                )
-                            ]
+                            [dof]
                         )
                     )
                 ),
@@ -416,6 +357,7 @@ class Udf(Formatter):
         with full_filename.open(mode='rb') as f:
             config = json.load(f)
         deepupdate(self.data, config)
+        self.validate_list_element()
 
     def init_params(self):
         """Prepare dict whose keys are valid for gourmet."""
@@ -477,3 +419,25 @@ class Udf(Formatter):
                 udf_str += '\n'
 
         return udf_str
+
+    def validate_list_element(self):
+        valiate_dict = dict(
+            particle_spec_list=(self.data['object_type']['spherical_particle']['particle_spec'], particle_spec),
+            chain_spec_list=(self.data['object_type']['chain']['chain_spec'], chain_spec),
+            rigid_spec_list=(self.data['object_type']['rigid']['rigid_spec'], rigid_spec),
+            particles_list=(self.data['switch']['init_distribution']['user_specify']['particles'], particle),
+            dof_list=(self.data['switch']['free_rigid']['yes']['dof'], dof)
+        )
+
+        for value in valiate_dict.values():
+            validate(value[0], value[1])
+
+        int_lists = dict(
+            pin=self.data['switch']['pin']['yes']['pin'],
+            pin_rot=self.data['switch']['pin']['yes']['pin_rot'],
+        )
+
+        for key, int_list in int_lists.items():
+            for element in int_list:
+                if not isinstance(element, int):
+                    raise ValueError(f"Contents of {key} must be int, but got: {element} as {type(element).__name__}")

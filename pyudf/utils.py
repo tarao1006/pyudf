@@ -73,3 +73,48 @@ def deepupdate(base, other):
                     base[key] = value
                 else:
                     raise ValueError(f"Value of '{key}' must be {old_value_type.__name__}, but got: {value} as {type(value).__name__}.")
+
+
+def _validate_dict(value_dict, template):
+    """
+
+    Parameters
+    ----------
+    value_dict: dict
+    template: int, float, str or dict
+    """
+    if not isinstance(value_dict, dict) or not isinstance(template, dict):
+        raise TypeError()
+
+    for key, value in value_dict.items():
+        if isinstance(value, dict):
+            if key in template:
+                _validate_dict(value, template[key])
+            else:
+                raise ValueError(f"The key '{key}' is invalid.")
+        elif isinstance(value, list):
+            pass
+        else:  # type of value is int, float or str
+            if key in template:
+                if not isinstance(value, type(template[key])):
+                    raise TypeError(f"Value of '{key}' must be {type(template[key]).__name__}, but got: {value} as {type(value).__name__}.")
+            else:
+                raise ValueError(f"The key '{key}' is invalid.")
+
+
+def validate(values, template):
+    """
+
+    Parameters
+    ----------
+    values: list of dict
+    template: dict
+    """
+    if not isinstance(values, list):
+        raise TypeError(f"values must be list, but got: {values} as {type(values)}.")
+
+    if not isinstance(template, dict):
+        raise TypeError(f"values must be dict, but got: {values} as {type(values)}.")
+
+    for value in values:
+        _validate_dict(value, template)
