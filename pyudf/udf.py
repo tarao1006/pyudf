@@ -283,19 +283,19 @@ class Udf(Formatter):
                             crop='YES',
                             yes=dict(
                                 slab_x=dict(
-                                    x=0,
-                                    y=0,
-                                    z=0
+                                    start=0,
+                                    count=0,
+                                    stride=0
                                 ),
                                 slab_y=dict(
-                                    x=0,
-                                    y=0,
-                                    z=0
+                                    start=0,
+                                    count=0,
+                                    stride=0
                                 ),
                                 slab_z=dict(
-                                    x=0,
-                                    y=0,
-                                    z=0
+                                    start=0,
+                                    count=0,
+                                    stride=0
                                 )
                             ),
                             vel='YES',
