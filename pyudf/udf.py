@@ -1,3 +1,5 @@
+import json
+
 from .utils import find_file
 from .udftype import particle, sparticle, matrix3d, vector3d
 from .formatter import Formatter
@@ -387,7 +389,7 @@ class Udf(Formatter):
 
         return self._udf_str(self.params)
 
-    def load_config(self, filename='config.py', path=None):
+    def load_pyconfig(self, filename='config.py', path=None):
         """Load confi file and update params.
 
         Parameters
@@ -399,6 +401,19 @@ class Udf(Formatter):
         full_filename = find_file(filename, path)
         with full_filename.open(mode='rb') as f:
             exec(compile(f.read(), str(full_filename), 'exec'))
+
+    def load_jsonconfig(self, filename='config.json', path=None):
+        """Load confi file and update params.
+
+        Parameters
+        ----------
+        filename: str or Path
+            Filename to be loaded.
+        Path: str, None or list of str
+        """
+        full_filename = find_file(filename, path)
+        with full_filename.open(mode='rb') as f:
+            config = json.load(f)
 
     def init_params(self):
         """Prepare dict whose keys are valid for gourmet."""
