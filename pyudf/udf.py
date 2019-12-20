@@ -438,6 +438,8 @@ class Udf(Formatter):
         )
 
         for key, int_list in int_lists.items():
+            if int_list == []:
+                continue
             for element in int_list:
                 if not isinstance(element, int):
                     raise ValueError(f"Contents of {key} must be int, but got: {element} as {type(element).__name__}")
