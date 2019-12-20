@@ -1,6 +1,6 @@
 # Pyudf
 
-## Instllation
+## Installation
 
 ```bash
 pip install pyudf
