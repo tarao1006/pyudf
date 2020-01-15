@@ -55,6 +55,8 @@ sparticle = dict(
     torque_slip_previous=vector3d,
     torque_r=vector3d,
     torque_r_previous=vector3d,
+    torque_bh=vector3d,
+    torque_bh_previous=vector3d,
     q=quaternion,
     q_old=quaternion
 )
